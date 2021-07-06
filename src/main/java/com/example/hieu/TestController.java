@@ -1,6 +1,5 @@
 package com.example.hieu;
 
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -10,34 +9,60 @@ import java.io.*;
 public class TestController {
 
 
-    @GetMapping("/")
-    public String index(String a)  {
-//        File file = new File("")
-try {
-
-    File file =   ResourceUtils.getFile("/src/main/resources/data.dontfile.txt");
-    FileWriter fw = new FileWriter(file);
-    BufferedWriter bw = new BufferedWriter(fw);
-    bw.write("ahghfgfg");
-    bw.newLine();
-    FileReader fr = new FileReader(file);
-    BufferedReader br = new BufferedReader(fr);
-    String line;
-    while((line = br.readLine()) != null){
-        System.out.print(line);
+    @PostMapping("/writefile")
+    public Test index(@RequestBody Test text) {
+        try {
+            File file = new File("data.dontfile.txt");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            bw.append("id,name \n");
+            bw.write(text.getId()+","+text.getName());
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return text;
     }
 
+    @GetMapping("/readfile")
+    public String readfile() {
+        String s ="";
+        try {
+            File file = new File("data.dontfile.txt");
+            StringBuffer sb = new StringBuffer();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append("\n");
+                System.out.println(line);
+                s += line;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
 
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-} catch (IOException e) {
-    e.printStackTrace();
-}
-
-        return a;
-
-
-
+    @DeleteMapping("/deleteFile")
+    public void deleteFile(String id) {
+        try {
+            File file = new File("data.dontfile.txt");
+            StringBuffer sb = new StringBuffer();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append("");
+                sb.append("\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
+
+

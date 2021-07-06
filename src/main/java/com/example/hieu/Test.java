@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Test {
+    private String id;
     private String name;
-    private String add;
-    private String age;
 }
